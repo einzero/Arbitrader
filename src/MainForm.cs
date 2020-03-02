@@ -20,7 +20,6 @@ namespace Arbitrader
             _timer.Start();
 
             _beginTime = Time();
-            RegisterAction(5000, UpdateBalances);
 
             dataGridView_Balance.Columns.Add("예수금", "예수금");
             dataGridView_Balance.Columns.Add("D+2추정예수금", "D+2추정예수금");
@@ -47,7 +46,19 @@ namespace Arbitrader
             label_UserId.Text = OpenAPI.GetLoginInfo("USER_ID");
             label_Server.Text = OpenAPI.GetLoginInfo("GetServerGubun") == "1" ? "모의 투자" : "실서버";
 
+            RegisterAction(5000, UpdateBalances);
             Show();
+        }
+
+        private void 백테스터열기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new BackTestForm(OpenAPI);
+            form.Show();
+        }
+
+        private void 로그ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LogForm.Instance.Show();
         }
 
         private void AxKHOpenAPI1_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
@@ -64,11 +75,16 @@ namespace Arbitrader
         
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if(CheckDisconnected())
+            if (CheckDisconnected())
             {
                 _timer.Stop();
                 MessageBox.Show("접속이 종료되었습니다.\n 프로그램을 종료합니다.");
                 Application.Exit();
+                return;
+            }
+
+            if (!IsConnected())
+            {
                 return;
             }
 
@@ -145,6 +161,11 @@ namespace Arbitrader
 
         private void RegisterAction(int interval, Action action)
         {
+            if (_actions.Any(x => x.Action == action))
+            {
+                return;
+            }
+
             var item = new TimerAction();
             item.Interval = interval;
             item.Action = action;

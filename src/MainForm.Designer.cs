@@ -38,19 +38,26 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox_Account = new System.Windows.Forms.ComboBox();
             this.dataGridView_Balance = new System.Windows.Forms.DataGridView();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.분석ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.백테스터열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.창ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.로그ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.OpenAPI)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // OpenAPI
             // 
             this.OpenAPI.Enabled = true;
-            this.OpenAPI.Location = new System.Drawing.Point(12, 12);
+            this.OpenAPI.Location = new System.Drawing.Point(685, 152);
             this.OpenAPI.Name = "OpenAPI";
             this.OpenAPI.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("OpenAPI.OcxState")));
             this.OpenAPI.Size = new System.Drawing.Size(67, 17);
             this.OpenAPI.TabIndex = 0;
+            this.OpenAPI.Visible = false;
             // 
             // tableLayoutPanel1
             // 
@@ -159,20 +166,63 @@
             // dataGridView_Balance
             // 
             this.dataGridView_Balance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_Balance.Location = new System.Drawing.Point(330, 183);
+            this.dataGridView_Balance.Location = new System.Drawing.Point(12, 175);
             this.dataGridView_Balance.Name = "dataGridView_Balance";
             this.dataGridView_Balance.RowTemplate.Height = 23;
-            this.dataGridView_Balance.Size = new System.Drawing.Size(458, 255);
+            this.dataGridView_Balance.Size = new System.Drawing.Size(740, 289);
             this.dataGridView_Balance.TabIndex = 2;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.분석ToolStripMenuItem,
+            this.창ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(764, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // 분석ToolStripMenuItem
+            // 
+            this.분석ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.백테스터열기ToolStripMenuItem});
+            this.분석ToolStripMenuItem.Name = "분석ToolStripMenuItem";
+            this.분석ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.분석ToolStripMenuItem.Text = "분석";
+            // 
+            // 백테스터열기ToolStripMenuItem
+            // 
+            this.백테스터열기ToolStripMenuItem.Name = "백테스터열기ToolStripMenuItem";
+            this.백테스터열기ToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.백테스터열기ToolStripMenuItem.Text = "백테스터 열기";
+            this.백테스터열기ToolStripMenuItem.Click += new System.EventHandler(this.백테스터열기ToolStripMenuItem_Click);
+            // 
+            // 창ToolStripMenuItem
+            // 
+            this.창ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.로그ToolStripMenuItem});
+            this.창ToolStripMenuItem.Name = "창ToolStripMenuItem";
+            this.창ToolStripMenuItem.Size = new System.Drawing.Size(31, 20);
+            this.창ToolStripMenuItem.Text = "창";
+            // 
+            // 로그ToolStripMenuItem
+            // 
+            this.로그ToolStripMenuItem.Name = "로그ToolStripMenuItem";
+            this.로그ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.로그ToolStripMenuItem.Text = "로그";
+            this.로그ToolStripMenuItem.Click += new System.EventHandler(this.로그ToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(764, 476);
             this.Controls.Add(this.dataGridView_Balance);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.OpenAPI);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Arbitrader";
@@ -180,7 +230,10 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -195,6 +248,11 @@
         private System.Windows.Forms.Label label_UserId;
         private System.Windows.Forms.ComboBox comboBox_Account;
         private System.Windows.Forms.DataGridView dataGridView_Balance;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 분석ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 백테스터열기ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 창ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 로그ToolStripMenuItem;
     }
 }
 
