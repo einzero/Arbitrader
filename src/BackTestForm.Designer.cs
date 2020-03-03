@@ -110,7 +110,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "BackTestForm";
             this.Text = "BackTestForm";
-            this.Load += new System.EventHandler(this.BackTestForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BackTestForm_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.OpenAPI = new AxKHOpenAPILib.AxKHOpenAPI();
+            this.axKHOpenAPI = new AxKHOpenAPILib.AxKHOpenAPI();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label_Server = new System.Windows.Forms.Label();
             this.label_UserId = new System.Windows.Forms.Label();
@@ -43,21 +43,21 @@
             this.백테스터열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.창ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.로그ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.OpenAPI)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // OpenAPI
+            // axKHOpenAPI
             // 
-            this.OpenAPI.Enabled = true;
-            this.OpenAPI.Location = new System.Drawing.Point(685, 152);
-            this.OpenAPI.Name = "OpenAPI";
-            this.OpenAPI.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("OpenAPI.OcxState")));
-            this.OpenAPI.Size = new System.Drawing.Size(67, 17);
-            this.OpenAPI.TabIndex = 0;
-            this.OpenAPI.Visible = false;
+            this.axKHOpenAPI.Enabled = true;
+            this.axKHOpenAPI.Location = new System.Drawing.Point(685, 152);
+            this.axKHOpenAPI.Name = "axKHOpenAPI";
+            this.axKHOpenAPI.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axKHOpenAPI.OcxState")));
+            this.axKHOpenAPI.Size = new System.Drawing.Size(67, 17);
+            this.axKHOpenAPI.TabIndex = 0;
+            this.axKHOpenAPI.Visible = false;
             // 
             // tableLayoutPanel1
             // 
@@ -209,7 +209,7 @@
             // 로그ToolStripMenuItem
             // 
             this.로그ToolStripMenuItem.Name = "로그ToolStripMenuItem";
-            this.로그ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.로그ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.로그ToolStripMenuItem.Text = "로그";
             this.로그ToolStripMenuItem.Click += new System.EventHandler(this.로그ToolStripMenuItem_Click);
             // 
@@ -220,13 +220,13 @@
             this.ClientSize = new System.Drawing.Size(764, 476);
             this.Controls.Add(this.dataGridView_Balance);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.OpenAPI);
+            this.Controls.Add(this.axKHOpenAPI);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Arbitrader";
-            ((System.ComponentModel.ISupportInitialize)(this.OpenAPI)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).EndInit();
@@ -239,7 +239,7 @@
 
         #endregion
 
-        private AxKHOpenAPILib.AxKHOpenAPI OpenAPI;
+        private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

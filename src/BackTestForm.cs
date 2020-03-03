@@ -5,19 +5,35 @@ namespace Arbitrader
 {
     public partial class BackTestForm : Form
     {
-        public BackTestForm(AxKHOpenAPILib.AxKHOpenAPI openApi)
+        private static BackTestForm _instance;
+        public static BackTestForm Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new BackTestForm();
+                    _instance.Hide();
+                }
+
+                return _instance;
+            }
+        }
+
+        public BackTestForm()
         {
             InitializeComponent();
-            OpenApi = openApi;
 
-            var list = OpenApi.GetCodeListByMarket("8").Trim().Split(';');
-            Debug.Info(list);
+            //var list = OpenApi.GetCodeListByMarket("8").Trim().Split(';');
         }
 
-        private void BackTestForm_Load(object sender, EventArgs e)
+        private void BackTestForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
-
-        private AxKHOpenAPILib.AxKHOpenAPI OpenApi;
     }
 }

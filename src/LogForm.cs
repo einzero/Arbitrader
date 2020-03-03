@@ -6,11 +6,7 @@ namespace Arbitrader
 {
     public partial class LogForm : Form
     {
-        public LogForm()
-        {
-            InitializeComponent();
-        }
-
+        private static LogForm _instance;
         public static LogForm Instance
         {
             get
@@ -18,13 +14,17 @@ namespace Arbitrader
                 if (_instance == null)
                 {
                     _instance = new LogForm();
+                    _instance.Hide();
                 }
 
                 return _instance;
             }
         }
 
-        private static LogForm _instance;
+        public LogForm()
+        {
+            InitializeComponent();
+        }
 
         public RichTextBox TextBox
         {
