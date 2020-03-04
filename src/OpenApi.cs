@@ -7,6 +7,17 @@ namespace Arbitrader
 {
     public static class OpenApi
     {
+        public class Stock
+        {
+            public string Code;
+            public string Name;
+
+            public override string ToString()
+            {
+                return Name;
+            }
+        };
+
         public delegate void TrCallback(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e);
 
         public static event Action<string[], string, string> Connected;
@@ -19,6 +30,7 @@ namespace Arbitrader
         private static List<TimerAction> _actions = new List<TimerAction>();
 
         private static readonly Dictionary<string, TrCallback> _trs = new Dictionary<string, TrCallback>();
+        private static readonly List<Stock> _etfs = new List<Stock>();
 
         private class TimerAction
         {
@@ -77,6 +89,11 @@ namespace Arbitrader
             CommRqData("OPW00004", callback);
         }
 
+        public static IEnumerable<Stock> GetETFs()
+        {
+            return _etfs;
+        }
+
         private static void AxKHOpenAPI1_OnEventConnect(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnEventConnectEvent e)
         {
             if (e.nErrCode != 0)
@@ -90,11 +107,27 @@ namespace Arbitrader
             string[] accounts = acclist.Trim().Split(';').Where(x => x.Length > 0).ToArray();
 
             var userId = _api.GetLoginInfo("USER_ID");
-            var server = _api.GetLoginInfo("GetServerGubun");
+            var server = _api.GetLoginInfo("GetServerGubun") == "0" ? "모의" : "실제";
 
             if (Connected != null)
             {
                 Connected(accounts, userId, server);
+            }
+
+            // fill etfs
+            var list = _api.GetCodeListByMarket("8").Trim().Split(';');
+            foreach(var code in list)
+            {
+                if(string.IsNullOrEmpty(code))
+                {
+                    continue;
+                }
+
+                _etfs.Add(new Stock
+                {
+                    Code = code,
+                    Name = _api.GetMasterCodeName(code)
+                });
             }
         }
 

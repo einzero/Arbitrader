@@ -35,6 +35,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_종목1 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox_종목2 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +74,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.comboBox_종목2);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.comboBox_종목1);
             this.groupBox1.Controls.Add(this.label2);
@@ -99,8 +103,25 @@
             this.comboBox_종목1.FormattingEnabled = true;
             this.comboBox_종목1.Location = new System.Drawing.Point(60, 87);
             this.comboBox_종목1.Name = "comboBox_종목1";
-            this.comboBox_종목1.Size = new System.Drawing.Size(121, 20);
+            this.comboBox_종목1.Size = new System.Drawing.Size(200, 20);
             this.comboBox_종목1.TabIndex = 4;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 116);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 12);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "종목2:";
+            // 
+            // comboBox_종목2
+            // 
+            this.comboBox_종목2.FormattingEnabled = true;
+            this.comboBox_종목2.Location = new System.Drawing.Point(60, 113);
+            this.comboBox_종목2.Name = "comboBox_종목2";
+            this.comboBox_종목2.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_종목2.TabIndex = 6;
             // 
             // BackTestForm
             // 
@@ -126,5 +147,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBox_종목1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox_종목2;
     }
 }

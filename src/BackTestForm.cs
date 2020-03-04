@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Arbitrader
@@ -24,7 +25,12 @@ namespace Arbitrader
         {
             InitializeComponent();
 
-            //var list = OpenApi.GetCodeListByMarket("8").Trim().Split(';');
+            var etfs = OpenApi.GetETFs();
+            foreach(var etf in etfs)
+            {
+                comboBox_종목1.Items.Add(etf);
+                comboBox_종목2.Items.Add(etf);
+            }            
         }
 
         private void BackTestForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -37,3 +43,4 @@ namespace Arbitrader
         }
     }
 }
+
