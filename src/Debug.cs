@@ -1,49 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Arbitrader
 {
-    public partial class LogForm : Form
-    {
-        private static LogForm _instance;
-        public static LogForm Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new LogForm();
-                    _instance.Hide();
-                }
-
-                return _instance;
-            }
-        }
-
-        public LogForm()
-        {
-            InitializeComponent();
-        }
-
-        public RichTextBox TextBox
-        {
-            get
-            {
-                 return richTextBox_Logs;
-            }
-        }
-
-        private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                Hide();
-            }
-        }
-    }
-
     public static class Debug
     {
         public static void Error(string format, params object[] args)
@@ -76,11 +39,11 @@ namespace Arbitrader
                 return;
             }
 
-            LogForm form = LogForm.Instance;
+            MainForm form = MainForm.Instance;
 
-            if (!string.IsNullOrEmpty(form.TextBox.Text))
+            if (!string.IsNullOrEmpty(form.Logs.Text))
             {
-                form.TextBox.AppendText(Environment.NewLine);
+                form.Logs.AppendText(Environment.NewLine);
             }
 
             Color color = GetColorByLevel(level);
@@ -88,10 +51,10 @@ namespace Arbitrader
             var str = string.Format(format, args);
             var now = DateTime.Now;
             var header = string.Format("{0}: {1}", now, str);
-            form.TextBox.AppendText(header, color);
-            form.TextBox.ScrollToCaret();
+            form.Logs.AppendText(header, color);
+            form.Logs.ScrollToCaret();
         }
- 
+
         private static Color GetColorByLevel(LogLevel level)
         {
             switch (level)
@@ -110,19 +73,6 @@ namespace Arbitrader
             Info,
             Warning,
             Error,
-        }
-    }
-
-    public static class RichTextBoxExtensions
-    {
-        public static void AppendText(this RichTextBox box, string text, Color color)
-        {
-            box.SelectionStart = box.TextLength;
-            box.SelectionLength = 0;
-
-            box.SelectionColor = color;
-            box.AppendText(text);
-            box.SelectionColor = box.ForeColor;
         }
     }
 }

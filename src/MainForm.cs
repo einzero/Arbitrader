@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,8 +9,24 @@ namespace Arbitrader
 {
     public partial class MainForm : Form
     {
+        public static MainForm Instance
+        {
+            get;
+            private set;
+        }
+
+         public RichTextBox Logs
+        {
+            get
+            {
+                return richTextBox_Logs;
+            }
+        }
+
         public MainForm()
         {
+            Instance = this;
+
             InitializeComponent();
             OpenApi.Init(axKHOpenAPI);
 
@@ -55,11 +72,6 @@ namespace Arbitrader
             BackTestForm.Instance.Show();
         }
 
-        private void 로그ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LogForm.Instance.Show();
-        }
-
         private void AxKHOpenAPI1_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
            
@@ -75,6 +87,20 @@ namespace Arbitrader
         {
             return (string)comboBox_Account.SelectedItem;
         }     
-    }    
+    }
+
+    public static class RichTextBoxExtensions
+    {
+        public static void AppendText(this RichTextBox box, string text, Color color)
+        {
+            box.SelectionStart = box.TextLength;
+            box.SelectionLength = 0;
+
+            box.SelectionColor = color;
+            box.AppendText(text);
+            box.SelectionColor = box.ForeColor;
+        }
+    }
+
 }
   

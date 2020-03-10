@@ -41,8 +41,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.분석ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.백테스터열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.창ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.로그ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.richTextBox_Logs = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).BeginInit();
@@ -165,6 +164,8 @@
             // 
             // dataGridView_Balance
             // 
+            this.dataGridView_Balance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView_Balance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Balance.Location = new System.Drawing.Point(12, 175);
             this.dataGridView_Balance.Name = "dataGridView_Balance";
@@ -175,8 +176,7 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.분석ToolStripMenuItem,
-            this.창ToolStripMenuItem});
+            this.분석ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(764, 24);
@@ -198,32 +198,31 @@
             this.백테스터열기ToolStripMenuItem.Text = "백테스터 열기";
             this.백테스터열기ToolStripMenuItem.Click += new System.EventHandler(this.백테스터열기ToolStripMenuItem_Click);
             // 
-            // 창ToolStripMenuItem
+            // richTextBox_Logs
             // 
-            this.창ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.로그ToolStripMenuItem});
-            this.창ToolStripMenuItem.Name = "창ToolStripMenuItem";
-            this.창ToolStripMenuItem.Size = new System.Drawing.Size(31, 20);
-            this.창ToolStripMenuItem.Text = "창";
-            // 
-            // 로그ToolStripMenuItem
-            // 
-            this.로그ToolStripMenuItem.Name = "로그ToolStripMenuItem";
-            this.로그ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
-            this.로그ToolStripMenuItem.Text = "로그";
-            this.로그ToolStripMenuItem.Click += new System.EventHandler(this.로그ToolStripMenuItem_Click);
+            this.richTextBox_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBox_Logs.Location = new System.Drawing.Point(12, 479);
+            this.richTextBox_Logs.Name = "richTextBox_Logs";
+            this.richTextBox_Logs.ReadOnly = true;
+            this.richTextBox_Logs.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBox_Logs.Size = new System.Drawing.Size(740, 106);
+            this.richTextBox_Logs.TabIndex = 8;
+            this.richTextBox_Logs.Text = "";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 476);
+            this.ClientSize = new System.Drawing.Size(764, 597);
+            this.Controls.Add(this.richTextBox_Logs);
             this.Controls.Add(this.dataGridView_Balance);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.axKHOpenAPI);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(780, 636);
             this.Name = "MainForm";
             this.Text = "Arbitrader";
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).EndInit();
@@ -251,8 +250,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 분석ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 백테스터열기ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 창ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 로그ToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox richTextBox_Logs;
     }
 }
 

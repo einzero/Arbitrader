@@ -52,12 +52,7 @@
     <Compile Include="BackTestForm.Designer.cs">
       <DependentUpon>BackTestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LogForm.Designer.cs">
-      <DependentUpon>LogForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Debug.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,9 +64,6 @@
     <Compile Include="OpenApi.cs" />
     <EmbeddedResource Include="BackTestForm.resx">
       <DependentUpon>BackTestForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogForm.resx">
-      <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
