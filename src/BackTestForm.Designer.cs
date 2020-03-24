@@ -33,10 +33,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox_종목1 = new System.Windows.Forms.ComboBox();
+            this.button_Test = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox_종목2 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox_종목1 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,6 +75,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button_Test);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.comboBox_종목2);
             this.groupBox1.Controls.Add(this.label3);
@@ -89,22 +91,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "설정";
             // 
-            // label3
+            // button_Test
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 90);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "종목1: ";
-            // 
-            // comboBox_종목1
-            // 
-            this.comboBox_종목1.FormattingEnabled = true;
-            this.comboBox_종목1.Location = new System.Drawing.Point(60, 87);
-            this.comboBox_종목1.Name = "comboBox_종목1";
-            this.comboBox_종목1.Size = new System.Drawing.Size(200, 20);
-            this.comboBox_종목1.TabIndex = 4;
+            this.button_Test.Location = new System.Drawing.Point(424, 212);
+            this.button_Test.Name = "button_Test";
+            this.button_Test.Size = new System.Drawing.Size(75, 23);
+            this.button_Test.TabIndex = 8;
+            this.button_Test.Text = "테스트";
+            this.button_Test.UseVisualStyleBackColor = true;
+            this.button_Test.Click += new System.EventHandler(this.button_Test_Click);
             // 
             // label4
             // 
@@ -122,6 +117,23 @@
             this.comboBox_종목2.Name = "comboBox_종목2";
             this.comboBox_종목2.Size = new System.Drawing.Size(200, 20);
             this.comboBox_종목2.TabIndex = 6;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 90);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "종목1: ";
+            // 
+            // comboBox_종목1
+            // 
+            this.comboBox_종목1.FormattingEnabled = true;
+            this.comboBox_종목1.Location = new System.Drawing.Point(60, 87);
+            this.comboBox_종목1.Name = "comboBox_종목1";
+            this.comboBox_종목1.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_종목1.TabIndex = 4;
             // 
             // BackTestForm
             // 
@@ -149,5 +161,6 @@
         private System.Windows.Forms.ComboBox comboBox_종목1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox_종목2;
+        private System.Windows.Forms.Button button_Test;
     }
 }

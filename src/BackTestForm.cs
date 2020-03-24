@@ -41,6 +41,19 @@ namespace Arbitrader
                 Hide();
             }
         }
+
+        private async void button_Test_Click(object sender, EventArgs e)
+        {
+            var stock = comboBox_종목1.SelectedItem as OpenApi.Stock;
+            var date = dateTimePicker_Begin.Value;
+
+            var day = date.ToString("yyyyMMdd");
+            var result = await StockPriceCollection.Get(stock.Code, day);
+
+            Debug.Info("{0}", result.Items.Count);
+
+            int x = 5;
+        }
     }
 }
 

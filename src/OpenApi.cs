@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace Arbitrader
 {
+    public delegate void TrCallback(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e);
+
     public static class OpenApi
     {
         public class Stock
@@ -17,8 +19,6 @@ namespace Arbitrader
                 return Name;
             }
         };
-
-        public delegate void TrCallback(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e);
 
         public static event Action<string[], string, string> Connected;
 
@@ -74,9 +74,14 @@ namespace Arbitrader
             _actions.Add(item);
         }
 
-        public static string GetTrData(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e, string sName)
+        public static int GetRepeatCnt(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            var data = _api.GetCommData(e.sTrCode, e.sRecordName, 0, sName);
+            return _api.GetRepeatCnt(e.sTrCode, e.sRecordName);
+        }
+
+        public static string GetTrData(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e, string sName, int index = 0)
+        {
+            var data = _api.GetCommData(e.sTrCode, e.sRecordName, index, sName);
             return data.Trim();
         }
 
@@ -185,12 +190,12 @@ namespace Arbitrader
             return DateTime.Now;
         }
 
-        private static void SetInputValue(string sID, string sValue)
+        public static void SetInputValue(string sID, string sValue)
         {
             _api.SetInputValue(sID, sValue);
         }
 
-        private static void CommRqData(string sTrCode, TrCallback callback)
+        public static void CommRqData(string sTrCode, TrCallback callback, int seq = 0)
         {
             if (_trs.ContainsKey(sTrCode))
             {
@@ -198,7 +203,7 @@ namespace Arbitrader
                 return;
             }
 
-            _api.CommRqData("RQName", sTrCode, 0, "화면번호");
+            _api.CommRqData("RQName", sTrCode, seq, "화면번호");
             _trs[sTrCode] = callback;
         }
     }
