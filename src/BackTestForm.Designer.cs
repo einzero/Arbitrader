@@ -35,9 +35,17 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button_Test = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox_종목2 = new System.Windows.Forms.ComboBox();
+            this.comboBox_Stock2 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox_종목1 = new System.Windows.Forms.ComboBox();
+            this.comboBox_Stock1 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox_Interval = new System.Windows.Forms.ComboBox();
+            this.checkBox_UseMinute = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox_Stock3 = new System.Windows.Forms.ComboBox();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.textBox_Quantity = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,25 +83,33 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.textBox_Quantity);
+            this.groupBox1.Controls.Add(this.progressBar);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.checkBox_UseMinute);
+            this.groupBox1.Controls.Add(this.comboBox_Stock3);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.comboBox_Interval);
             this.groupBox1.Controls.Add(this.button_Test);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.comboBox_종목2);
+            this.groupBox1.Controls.Add(this.comboBox_Stock2);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.comboBox_종목1);
+            this.groupBox1.Controls.Add(this.comboBox_Stock1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.dateTimePicker_Begin);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dateTimePicker_End);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(505, 241);
+            this.groupBox1.Size = new System.Drawing.Size(416, 241);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "설정";
             // 
             // button_Test
             // 
-            this.button_Test.Location = new System.Drawing.Point(424, 212);
+            this.button_Test.Location = new System.Drawing.Point(328, 201);
             this.button_Test.Name = "button_Test";
             this.button_Test.Size = new System.Drawing.Size(75, 23);
             this.button_Test.TabIndex = 8;
@@ -110,13 +126,13 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "종목2:";
             // 
-            // comboBox_종목2
+            // comboBox_Stock2
             // 
-            this.comboBox_종목2.FormattingEnabled = true;
-            this.comboBox_종목2.Location = new System.Drawing.Point(60, 113);
-            this.comboBox_종목2.Name = "comboBox_종목2";
-            this.comboBox_종목2.Size = new System.Drawing.Size(200, 20);
-            this.comboBox_종목2.TabIndex = 6;
+            this.comboBox_Stock2.FormattingEnabled = true;
+            this.comboBox_Stock2.Location = new System.Drawing.Point(60, 113);
+            this.comboBox_Stock2.Name = "comboBox_Stock2";
+            this.comboBox_Stock2.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock2.TabIndex = 6;
             // 
             // label3
             // 
@@ -127,20 +143,91 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "종목1: ";
             // 
-            // comboBox_종목1
+            // comboBox_Stock1
             // 
-            this.comboBox_종목1.FormattingEnabled = true;
-            this.comboBox_종목1.Location = new System.Drawing.Point(60, 87);
-            this.comboBox_종목1.Name = "comboBox_종목1";
-            this.comboBox_종목1.Size = new System.Drawing.Size(200, 20);
-            this.comboBox_종목1.TabIndex = 4;
+            this.comboBox_Stock1.FormattingEnabled = true;
+            this.comboBox_Stock1.Location = new System.Drawing.Point(60, 87);
+            this.comboBox_Stock1.Name = "comboBox_Stock1";
+            this.comboBox_Stock1.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock1.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(290, 45);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(33, 12);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "분봉:";
+            // 
+            // comboBox_Interval
+            // 
+            this.comboBox_Interval.FormattingEnabled = true;
+            this.comboBox_Interval.Location = new System.Drawing.Point(341, 42);
+            this.comboBox_Interval.Name = "comboBox_Interval";
+            this.comboBox_Interval.Size = new System.Drawing.Size(62, 20);
+            this.comboBox_Interval.TabIndex = 9;
+            // 
+            // checkBox_UseMinute
+            // 
+            this.checkBox_UseMinute.AutoSize = true;
+            this.checkBox_UseMinute.Location = new System.Drawing.Point(292, 20);
+            this.checkBox_UseMinute.Name = "checkBox_UseMinute";
+            this.checkBox_UseMinute.Size = new System.Drawing.Size(76, 16);
+            this.checkBox_UseMinute.TabIndex = 11;
+            this.checkBox_UseMinute.Text = "분봉 사용";
+            this.checkBox_UseMinute.UseVisualStyleBackColor = true;
+            this.checkBox_UseMinute.CheckedChanged += new System.EventHandler(this.checkBox_UseMinute_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(9, 142);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 12);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "종목3:";
+            // 
+            // comboBox_Stock3
+            // 
+            this.comboBox_Stock3.FormattingEnabled = true;
+            this.comboBox_Stock3.Location = new System.Drawing.Point(60, 139);
+            this.comboBox_Stock3.Name = "comboBox_Stock3";
+            this.comboBox_Stock3.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock3.TabIndex = 8;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(7, 201);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(315, 23);
+            this.progressBar.TabIndex = 12;
+            // 
+            // textBox_Quantity
+            // 
+            this.textBox_Quantity.Location = new System.Drawing.Point(60, 174);
+            this.textBox_Quantity.Name = "textBox_Quantity";
+            this.textBox_Quantity.Size = new System.Drawing.Size(100, 21);
+            this.textBox_Quantity.TabIndex = 13;
+            this.textBox_Quantity.Text = "1000";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 177);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 12);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "수량:";
             // 
             // BackTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(443, 264);
             this.Controls.Add(this.groupBox1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BackTestForm";
             this.Text = "BackTestForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BackTestForm_FormClosing);
@@ -158,9 +245,17 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox_종목1;
+        private System.Windows.Forms.ComboBox comboBox_Stock1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox_종목2;
+        private System.Windows.Forms.ComboBox comboBox_Stock2;
         private System.Windows.Forms.Button button_Test;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox_Interval;
+        private System.Windows.Forms.CheckBox checkBox_UseMinute;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBox_Stock3;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox_Quantity;
     }
 }

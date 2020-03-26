@@ -199,7 +199,7 @@ namespace Arbitrader
         {
             if (_trs.ContainsKey(sTrCode))
             {
-                Debug.Warning("Previous {0} is not finished yet. Request will be ignored", sTrCode);
+                Debug.Warn("Previous {0} is not finished yet. Request will be ignored", sTrCode);
                 return;
             }
 

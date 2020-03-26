@@ -14,7 +14,7 @@ namespace Arbitrader
             Log(LogLevel.Error, format, args);
         }
 
-        public static void Warning(string format, params object[] args)
+        public static void Warn(string format, params object[] args)
         {
             Log(LogLevel.Warning, format, args);
         }
