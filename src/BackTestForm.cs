@@ -40,10 +40,14 @@ namespace Arbitrader
             var etfs = OpenApi.GetETFs();
             foreach(var etf in etfs)
             {
-                comboBox_Stock1.Items.Add(etf);
-                comboBox_Stock2.Items.Add(etf);
-                comboBox_Stock3.Items.Add(etf);
+                if(etf.Name.Contains("200") ||  etf.Name.Contains("150") || etf.Name.Contains("인버스"))
+                {
+                    comboBox_Stock1.Items.Add(etf);
+                    comboBox_Stock2.Items.Add(etf);
+                    comboBox_Stock3.Items.Add(etf);
+                }
             }
+
             comboBox_Stock1.SelectedItem = etfs.FirstOrDefault(x => x.Name == "KODEX 200");
             comboBox_Stock2.SelectedItem = etfs.FirstOrDefault(x => x.Name == "TIGER 200");
             comboBox_Stock3.SelectedItem = etfs.FirstOrDefault(x => x.Name == "KBSTAR 200");
@@ -110,6 +114,11 @@ namespace Arbitrader
             Debug.Info("{0}", collection2.Items.Count);
             progressBar.Value = 100;
 
+            float margin;
+            float.TryParse(textBox_Margin.Text, out margin);
+            margin /= 100;
+            margin += 1.0f;
+
             var items1 = collection1.Items;
             var items2 = collection2.Items;
             if (items1.Count <= 0 || items2.Count <= 0)
@@ -162,7 +171,7 @@ namespace Arbitrader
                 j++;
 
                 if (item1.Time.Hour == 9 && item1.Time.Minute < 5) continue;
-                if (item1.Time.Hour >= 15) continue;
+                if (item1.Time.Hour >= 15 && item1.Time.Minute >= 20) continue;
 
                 var price1 = item1.Price;
                 var price2 = item2.Price;
@@ -173,11 +182,13 @@ namespace Arbitrader
                 var mineValue = mine * quantity;
                 var otherValue = other * quantity;
 
-                if (otherValue <= mineValue - mine)
+                const double fee = 0.00015;
+
+                if (otherValue * margin <= mineValue)
                 {
                     long diff = mineValue - otherValue;
-                    long count = diff / mine;
-                    long profit = count * mine;
+                    long profit = diff;
+                    profit -= (long)Math.Ceiling((mineValue + otherValue) * fee);
                     sum += profit;
 
                     isItem1 = !isItem1;

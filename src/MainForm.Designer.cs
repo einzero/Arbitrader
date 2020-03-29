@@ -42,6 +42,8 @@
             this.분석ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.백테스터열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBox_Logs = new System.Windows.Forms.RichTextBox();
+            this.button_LogClear = new System.Windows.Forms.Button();
+            this.button_Update = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).BeginInit();
@@ -207,15 +209,37 @@
             this.richTextBox_Logs.Name = "richTextBox_Logs";
             this.richTextBox_Logs.ReadOnly = true;
             this.richTextBox_Logs.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox_Logs.Size = new System.Drawing.Size(740, 106);
+            this.richTextBox_Logs.Size = new System.Drawing.Size(740, 130);
             this.richTextBox_Logs.TabIndex = 8;
             this.richTextBox_Logs.Text = "";
+            // 
+            // button_LogClear
+            // 
+            this.button_LogClear.Location = new System.Drawing.Point(677, 615);
+            this.button_LogClear.Name = "button_LogClear";
+            this.button_LogClear.Size = new System.Drawing.Size(75, 23);
+            this.button_LogClear.TabIndex = 9;
+            this.button_LogClear.Text = "Clear";
+            this.button_LogClear.UseVisualStyleBackColor = true;
+            this.button_LogClear.Click += new System.EventHandler(this.button_LogClear_Click);
+            // 
+            // button_Update
+            // 
+            this.button_Update.Location = new System.Drawing.Point(677, 146);
+            this.button_Update.Name = "button_Update";
+            this.button_Update.Size = new System.Drawing.Size(75, 23);
+            this.button_Update.TabIndex = 10;
+            this.button_Update.Text = "갱신";
+            this.button_Update.UseVisualStyleBackColor = true;
+            this.button_Update.Click += new System.EventHandler(this.button_Update_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 597);
+            this.ClientSize = new System.Drawing.Size(764, 650);
+            this.Controls.Add(this.button_Update);
+            this.Controls.Add(this.button_LogClear);
             this.Controls.Add(this.richTextBox_Logs);
             this.Controls.Add(this.dataGridView_Balance);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -251,6 +275,8 @@
         private System.Windows.Forms.ToolStripMenuItem 분석ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 백테스터열기ToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBox_Logs;
+        private System.Windows.Forms.Button button_LogClear;
+        private System.Windows.Forms.Button button_Update;
     }
 }
 

@@ -33,19 +33,21 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox_Quantity = new System.Windows.Forms.TextBox();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.checkBox_UseMinute = new System.Windows.Forms.CheckBox();
+            this.comboBox_Stock3 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox_Interval = new System.Windows.Forms.ComboBox();
             this.button_Test = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox_Stock2 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_Stock1 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox_Interval = new System.Windows.Forms.ComboBox();
-            this.checkBox_UseMinute = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBox_Stock3 = new System.Windows.Forms.ComboBox();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.textBox_Quantity = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox_Margin = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,6 +85,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.textBox_Margin);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.textBox_Quantity);
             this.groupBox1.Controls.Add(this.progressBar);
@@ -106,6 +110,75 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "설정";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 177);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 12);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "수량:";
+            // 
+            // textBox_Quantity
+            // 
+            this.textBox_Quantity.Location = new System.Drawing.Point(60, 174);
+            this.textBox_Quantity.Name = "textBox_Quantity";
+            this.textBox_Quantity.Size = new System.Drawing.Size(100, 21);
+            this.textBox_Quantity.TabIndex = 13;
+            this.textBox_Quantity.Text = "1000";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(7, 201);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(315, 23);
+            this.progressBar.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(9, 142);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 12);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "종목3:";
+            // 
+            // checkBox_UseMinute
+            // 
+            this.checkBox_UseMinute.AutoSize = true;
+            this.checkBox_UseMinute.Location = new System.Drawing.Point(292, 20);
+            this.checkBox_UseMinute.Name = "checkBox_UseMinute";
+            this.checkBox_UseMinute.Size = new System.Drawing.Size(76, 16);
+            this.checkBox_UseMinute.TabIndex = 11;
+            this.checkBox_UseMinute.Text = "분봉 사용";
+            this.checkBox_UseMinute.UseVisualStyleBackColor = true;
+            this.checkBox_UseMinute.CheckedChanged += new System.EventHandler(this.checkBox_UseMinute_CheckedChanged);
+            // 
+            // comboBox_Stock3
+            // 
+            this.comboBox_Stock3.FormattingEnabled = true;
+            this.comboBox_Stock3.Location = new System.Drawing.Point(60, 139);
+            this.comboBox_Stock3.Name = "comboBox_Stock3";
+            this.comboBox_Stock3.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock3.TabIndex = 8;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(290, 45);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(33, 12);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "분봉:";
+            // 
+            // comboBox_Interval
+            // 
+            this.comboBox_Interval.FormattingEnabled = true;
+            this.comboBox_Interval.Location = new System.Drawing.Point(341, 42);
+            this.comboBox_Interval.Name = "comboBox_Interval";
+            this.comboBox_Interval.Size = new System.Drawing.Size(62, 20);
+            this.comboBox_Interval.TabIndex = 9;
             // 
             // button_Test
             // 
@@ -151,74 +224,22 @@
             this.comboBox_Stock1.Size = new System.Drawing.Size(200, 20);
             this.comboBox_Stock1.TabIndex = 4;
             // 
-            // label5
+            // label8
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(290, 45);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(33, 12);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "분봉:";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(172, 177);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(57, 12);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "마진(%): ";
             // 
-            // comboBox_Interval
+            // textBox_Margin
             // 
-            this.comboBox_Interval.FormattingEnabled = true;
-            this.comboBox_Interval.Location = new System.Drawing.Point(341, 42);
-            this.comboBox_Interval.Name = "comboBox_Interval";
-            this.comboBox_Interval.Size = new System.Drawing.Size(62, 20);
-            this.comboBox_Interval.TabIndex = 9;
-            // 
-            // checkBox_UseMinute
-            // 
-            this.checkBox_UseMinute.AutoSize = true;
-            this.checkBox_UseMinute.Location = new System.Drawing.Point(292, 20);
-            this.checkBox_UseMinute.Name = "checkBox_UseMinute";
-            this.checkBox_UseMinute.Size = new System.Drawing.Size(76, 16);
-            this.checkBox_UseMinute.TabIndex = 11;
-            this.checkBox_UseMinute.Text = "분봉 사용";
-            this.checkBox_UseMinute.UseVisualStyleBackColor = true;
-            this.checkBox_UseMinute.CheckedChanged += new System.EventHandler(this.checkBox_UseMinute_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 142);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(39, 12);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "종목3:";
-            // 
-            // comboBox_Stock3
-            // 
-            this.comboBox_Stock3.FormattingEnabled = true;
-            this.comboBox_Stock3.Location = new System.Drawing.Point(60, 139);
-            this.comboBox_Stock3.Name = "comboBox_Stock3";
-            this.comboBox_Stock3.Size = new System.Drawing.Size(200, 20);
-            this.comboBox_Stock3.TabIndex = 8;
-            // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(7, 201);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(315, 23);
-            this.progressBar.TabIndex = 12;
-            // 
-            // textBox_Quantity
-            // 
-            this.textBox_Quantity.Location = new System.Drawing.Point(60, 174);
-            this.textBox_Quantity.Name = "textBox_Quantity";
-            this.textBox_Quantity.Size = new System.Drawing.Size(100, 21);
-            this.textBox_Quantity.TabIndex = 13;
-            this.textBox_Quantity.Text = "1000";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 177);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(33, 12);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "수량:";
+            this.textBox_Margin.Location = new System.Drawing.Point(235, 174);
+            this.textBox_Margin.Name = "textBox_Margin";
+            this.textBox_Margin.Size = new System.Drawing.Size(100, 21);
+            this.textBox_Margin.TabIndex = 15;
+            this.textBox_Margin.Text = "0.1";
             // 
             // BackTestForm
             // 
@@ -257,5 +278,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBox_Quantity;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox_Margin;
     }
 }

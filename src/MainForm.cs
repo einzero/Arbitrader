@@ -48,7 +48,7 @@ namespace Arbitrader
             label_UserId.Text = userId;
             label_Server.Text = server;
 
-            OpenApi.RegisterAction(5000, UpdateBalances);
+            UpdateBalances();
             Show();
         }
 
@@ -86,7 +86,17 @@ namespace Arbitrader
         private string GetAccount()
         {
             return (string)comboBox_Account.SelectedItem;
-        }     
+        }
+
+        private void button_LogClear_Click(object sender, EventArgs e)
+        {
+            richTextBox_Logs.Text = "";
+        }
+
+        private void button_Update_Click(object sender, EventArgs e)
+        {
+            UpdateBalances();
+        }
     }
 
     public static class RichTextBoxExtensions
