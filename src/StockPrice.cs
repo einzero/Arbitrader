@@ -57,7 +57,7 @@ namespace Arbitrader
             }
 
             OpenApi.SetInputValue("수정주가구분", "0");
-            OpenApi.CommRqData(IsDaily() ? "opt10081" : "opt10080", collection.PriceCallback, seq);
+            OpenApi.CommRqData("차트구하기", IsDaily() ? "opt10081" : "opt10080", collection.PriceCallback, seq);
         }
 
         private bool IsDaily()

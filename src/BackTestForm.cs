@@ -92,8 +92,8 @@ namespace Arbitrader
 
         private async void button_Test_Click(object sender, EventArgs e)
         {
-            var stock1 = comboBox_Stock1.SelectedItem as OpenApi.Stock;
-            var stock2 = comboBox_Stock2.SelectedItem as OpenApi.Stock;
+            var stock1 = comboBox_Stock1.SelectedItem as Stock;
+            var stock2 = comboBox_Stock2.SelectedItem as Stock;
             if (stock1 == null || stock2 == null) return;
 
             string interval = checkBox_UseMinute.Checked ? comboBox_Interval.SelectedItem.ToString() : "";
@@ -114,8 +114,7 @@ namespace Arbitrader
             Debug.Info("{0}", collection2.Items.Count);
             progressBar.Value = 100;
 
-            float margin;
-            float.TryParse(textBox_Margin.Text, out margin);
+            float margin = textBox_Margin.Text.ToFloat();
             margin /= 100;
             margin += 1.0f;
 
@@ -182,13 +181,11 @@ namespace Arbitrader
                 var mineValue = mine * quantity;
                 var otherValue = other * quantity;
 
-                const double fee = 0.00015;
-
                 if (otherValue * margin <= mineValue)
                 {
                     long diff = mineValue - otherValue;
                     long profit = diff;
-                    profit -= (long)Math.Ceiling((mineValue + otherValue) * fee);
+                    profit -= (long)Math.Ceiling((mineValue + otherValue) * OpenApi.Fee);
                     sum += profit;
 
                     isItem1 = !isItem1;

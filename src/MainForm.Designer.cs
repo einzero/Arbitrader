@@ -44,16 +44,31 @@
             this.richTextBox_Logs = new System.Windows.Forms.RichTextBox();
             this.button_LogClear = new System.Windows.Forms.Button();
             this.button_Update = new System.Windows.Forms.Button();
+            this.dataGridView_Stocks = new System.Windows.Forms.DataGridView();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox_Margin = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox_Quantity = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox_Stock3 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox_Stock2 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox_Stock1 = new System.Windows.Forms.ComboBox();
+            this.button_Start = new System.Windows.Forms.Button();
+            this.groupBox_Trade = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Stocks)).BeginInit();
+            this.groupBox_Trade.SuspendLayout();
             this.SuspendLayout();
             // 
             // axKHOpenAPI
             // 
             this.axKHOpenAPI.Enabled = true;
-            this.axKHOpenAPI.Location = new System.Drawing.Point(685, 152);
+            this.axKHOpenAPI.Location = new System.Drawing.Point(603, 203);
             this.axKHOpenAPI.Name = "axKHOpenAPI";
             this.axKHOpenAPI.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axKHOpenAPI.OcxState")));
             this.axKHOpenAPI.Size = new System.Drawing.Size(67, 17);
@@ -169,10 +184,10 @@
             this.dataGridView_Balance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView_Balance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_Balance.Location = new System.Drawing.Point(12, 175);
+            this.dataGridView_Balance.Location = new System.Drawing.Point(11, 232);
             this.dataGridView_Balance.Name = "dataGridView_Balance";
             this.dataGridView_Balance.RowTemplate.Height = 23;
-            this.dataGridView_Balance.Size = new System.Drawing.Size(740, 289);
+            this.dataGridView_Balance.Size = new System.Drawing.Size(740, 61);
             this.dataGridView_Balance.TabIndex = 2;
             // 
             // menuStrip1
@@ -215,6 +230,7 @@
             // 
             // button_LogClear
             // 
+            this.button_LogClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_LogClear.Location = new System.Drawing.Point(677, 615);
             this.button_LogClear.Name = "button_LogClear";
             this.button_LogClear.Size = new System.Drawing.Size(75, 23);
@@ -225,7 +241,8 @@
             // 
             // button_Update
             // 
-            this.button_Update.Location = new System.Drawing.Point(677, 146);
+            this.button_Update.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button_Update.Location = new System.Drawing.Point(676, 203);
             this.button_Update.Name = "button_Update";
             this.button_Update.Size = new System.Drawing.Size(75, 23);
             this.button_Update.TabIndex = 10;
@@ -233,11 +250,139 @@
             this.button_Update.UseVisualStyleBackColor = true;
             this.button_Update.Click += new System.EventHandler(this.button_Update_Click);
             // 
+            // dataGridView_Stocks
+            // 
+            this.dataGridView_Stocks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView_Stocks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Stocks.Location = new System.Drawing.Point(12, 299);
+            this.dataGridView_Stocks.Name = "dataGridView_Stocks";
+            this.dataGridView_Stocks.RowTemplate.Height = 23;
+            this.dataGridView_Stocks.Size = new System.Drawing.Size(740, 174);
+            this.dataGridView_Stocks.TabIndex = 11;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(169, 114);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(57, 12);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "마진(%): ";
+            // 
+            // textBox_Margin
+            // 
+            this.textBox_Margin.Location = new System.Drawing.Point(232, 111);
+            this.textBox_Margin.Name = "textBox_Margin";
+            this.textBox_Margin.Size = new System.Drawing.Size(100, 21);
+            this.textBox_Margin.TabIndex = 25;
+            this.textBox_Margin.Text = "0.1";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 114);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 12);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "수량:";
+            // 
+            // textBox_Quantity
+            // 
+            this.textBox_Quantity.Location = new System.Drawing.Point(57, 111);
+            this.textBox_Quantity.Name = "textBox_Quantity";
+            this.textBox_Quantity.Size = new System.Drawing.Size(100, 21);
+            this.textBox_Quantity.TabIndex = 23;
+            this.textBox_Quantity.Text = "10";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 79);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 12);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "종목3:";
+            // 
+            // comboBox_Stock3
+            // 
+            this.comboBox_Stock3.FormattingEnabled = true;
+            this.comboBox_Stock3.Location = new System.Drawing.Point(57, 76);
+            this.comboBox_Stock3.Name = "comboBox_Stock3";
+            this.comboBox_Stock3.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock3.TabIndex = 21;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 53);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 12);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "종목2:";
+            // 
+            // comboBox_Stock2
+            // 
+            this.comboBox_Stock2.FormattingEnabled = true;
+            this.comboBox_Stock2.Location = new System.Drawing.Point(57, 50);
+            this.comboBox_Stock2.Name = "comboBox_Stock2";
+            this.comboBox_Stock2.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock2.TabIndex = 19;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 27);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 12);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "종목1: ";
+            // 
+            // comboBox_Stock1
+            // 
+            this.comboBox_Stock1.FormattingEnabled = true;
+            this.comboBox_Stock1.Location = new System.Drawing.Point(57, 24);
+            this.comboBox_Stock1.Name = "comboBox_Stock1";
+            this.comboBox_Stock1.Size = new System.Drawing.Size(200, 20);
+            this.comboBox_Stock1.TabIndex = 17;
+            // 
+            // button_Start
+            // 
+            this.button_Start.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button_Start.Location = new System.Drawing.Point(415, 16);
+            this.button_Start.Name = "button_Start";
+            this.button_Start.Size = new System.Drawing.Size(114, 80);
+            this.button_Start.TabIndex = 27;
+            this.button_Start.Text = "거래 시작";
+            this.button_Start.UseVisualStyleBackColor = true;
+            this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
+            // 
+            // groupBox_Trade
+            // 
+            this.groupBox_Trade.Controls.Add(this.button_Start);
+            this.groupBox_Trade.Controls.Add(this.label8);
+            this.groupBox_Trade.Controls.Add(this.textBox_Margin);
+            this.groupBox_Trade.Controls.Add(this.label7);
+            this.groupBox_Trade.Controls.Add(this.textBox_Quantity);
+            this.groupBox_Trade.Controls.Add(this.label6);
+            this.groupBox_Trade.Controls.Add(this.comboBox_Stock3);
+            this.groupBox_Trade.Controls.Add(this.label4);
+            this.groupBox_Trade.Controls.Add(this.comboBox_Stock2);
+            this.groupBox_Trade.Controls.Add(this.label5);
+            this.groupBox_Trade.Controls.Add(this.comboBox_Stock1);
+            this.groupBox_Trade.Location = new System.Drawing.Point(216, 38);
+            this.groupBox_Trade.Name = "groupBox_Trade";
+            this.groupBox_Trade.Size = new System.Drawing.Size(535, 146);
+            this.groupBox_Trade.TabIndex = 28;
+            this.groupBox_Trade.TabStop = false;
+            this.groupBox_Trade.Text = "자동 거래";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(764, 650);
+            this.Controls.Add(this.dataGridView_Stocks);
             this.Controls.Add(this.button_Update);
             this.Controls.Add(this.button_LogClear);
             this.Controls.Add(this.richTextBox_Logs);
@@ -245,6 +390,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.axKHOpenAPI);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.groupBox_Trade);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(780, 636);
             this.Name = "MainForm";
@@ -255,6 +401,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Stocks)).EndInit();
+            this.groupBox_Trade.ResumeLayout(false);
+            this.groupBox_Trade.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,6 +426,19 @@
         private System.Windows.Forms.RichTextBox richTextBox_Logs;
         private System.Windows.Forms.Button button_LogClear;
         private System.Windows.Forms.Button button_Update;
+        private System.Windows.Forms.DataGridView dataGridView_Stocks;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox_Margin;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox_Quantity;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBox_Stock3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox_Stock2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox_Stock1;
+        private System.Windows.Forms.Button button_Start;
+        private System.Windows.Forms.GroupBox groupBox_Trade;
     }
 }
 

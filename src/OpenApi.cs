@@ -2,27 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using AxKHOpenAPILib;
 
 namespace Arbitrader
 {
-    public delegate void TrCallback(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e);
+    public delegate void TrCallback(_DKHOpenAPIEvents_OnReceiveTrDataEvent e);
 
     public static class OpenApi
     {
-        public class Stock
-        {
-            public string Code;
-            public string Name;
-
-            public override string ToString()
-            {
-                return Name;
-            }
-        };
+        public static double Fee = 0.00015;
 
         public static event Action<string[], string, string> Connected;
+        public static event Action<_DKHOpenAPIEvents_OnReceiveRealDataEvent> ReceivedRealData;
 
-        private static AxKHOpenAPILib.AxKHOpenAPI _api;
+        private static AxKHOpenAPI _api;
         private static bool _loginSucceed;
 
         private static Timer _timer = new Timer();
@@ -32,21 +25,15 @@ namespace Arbitrader
         private static readonly Dictionary<string, TrCallback> _trs = new Dictionary<string, TrCallback>();
         private static readonly List<Stock> _etfs = new List<Stock>();
 
-        private class TimerAction
-        {
-            // in ms
-            public int Interval;
-            public Action Action;
-
-            public DateTime LastTime;
-        }
-
-        public static void Init(AxKHOpenAPILib.AxKHOpenAPI api)
+        public static void Init(AxKHOpenAPI api)
         {
             _api = api;
 
             _api.OnEventConnect += AxKHOpenAPI1_OnEventConnect;
             _api.OnReceiveTrData += AxKHOpenAPI1_OnReceiveTrData;
+            _api.OnReceiveRealData += AxKHOpenAPI1_OnReceiveRealData;
+            _api.OnReceiveMsg += AxKHOpenAPI1_OnReceiveMsg;
+            _api.OnReceiveChejanData += AxKHOpenAPI1_OnReceiveChejanData;
             _api.CommConnect();
 
             _timer.Tick += Timer_Tick;
@@ -72,17 +59,31 @@ namespace Arbitrader
             item.Action = action;
             item.LastTime = Time();
             _actions.Add(item);
+
+            action();
         }
 
-        public static int GetRepeatCnt(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
+        public static int GetRepeatCnt(_DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
             return _api.GetRepeatCnt(e.sTrCode, e.sRecordName);
         }
 
-        public static string GetTrData(AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e, string sName, int index = 0)
+        public static string GetTrData(_DKHOpenAPIEvents_OnReceiveTrDataEvent e, string sName, int index = 0)
         {
             var data = _api.GetCommData(e.sTrCode, e.sRecordName, index, sName);
             return data.Trim();
+        }
+
+        public static string GetTrNum(_DKHOpenAPIEvents_OnReceiveTrDataEvent e, string sName, int index = 0)
+        {
+            return Prettify(GetTrData(e, sName, index));
+        }
+
+        private static string Prettify(string number)
+        {
+            long num;
+            long.TryParse(number, out num);
+            return string.Format("{0:N0}", num);
         }
 
         public static void UpdateBalances(string account, TrCallback callback)
@@ -91,7 +92,7 @@ namespace Arbitrader
             SetInputValue("비밀번호", "");
             SetInputValue("상장폐지조회구분", "1");
             SetInputValue("비밀번호입력매체구분", "00");
-            CommRqData("OPW00004", callback);
+            CommRqData("계좌평가", "OPW00004", callback);
         }
 
         public static IEnumerable<Stock> GetETFs()
@@ -99,7 +100,7 @@ namespace Arbitrader
             return _etfs;
         }
 
-        private static void AxKHOpenAPI1_OnEventConnect(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnEventConnectEvent e)
+        private static void AxKHOpenAPI1_OnEventConnect(object sender, _DKHOpenAPIEvents_OnEventConnectEvent e)
         {
             if (e.nErrCode != 0)
             {
@@ -113,11 +114,6 @@ namespace Arbitrader
 
             var userId = _api.GetLoginInfo("USER_ID");
             var server = _api.GetLoginInfo("GetServerGubun") == "0" ? "모의" : "실제";
-
-            if (Connected != null)
-            {
-                Connected(accounts, userId, server);
-            }
 
             // fill etfs
             var list = _api.GetCodeListByMarket("8").Trim().Split(';');
@@ -134,15 +130,45 @@ namespace Arbitrader
                     Name = _api.GetMasterCodeName(code)
                 });
             }
+
+            _etfs.Sort(delegate (Stock x, Stock y)
+            {
+                return string.Compare(x.Name, y.Name);
+            });
+
+            if (Connected != null)
+            {
+                Connected(accounts, userId, server);
+            }
         }
 
-        private static void AxKHOpenAPI1_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
+        private static void AxKHOpenAPI1_OnReceiveTrData(object sender, _DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
+            Debug.Info(e.sRQName + ":" + e.sTrCode + ":" + e.sMessage);
+
             if (_trs.TryGetValue(e.sTrCode, out TrCallback callback))
             {
                 _trs.Remove(e.sTrCode);
                 callback(e);
             }
+        }
+
+        private static void AxKHOpenAPI1_OnReceiveRealData(object sender, _DKHOpenAPIEvents_OnReceiveRealDataEvent e)
+        {
+            if(ReceivedRealData != null)
+            {
+                ReceivedRealData(e);
+            }
+        }
+
+        private static void AxKHOpenAPI1_OnReceiveMsg(object sender, _DKHOpenAPIEvents_OnReceiveMsgEvent e)
+        {
+            Debug.Info("RQ: {0}, TR: {1} - {2}", e.sRQName, e.sTrCode, e.sMsg);
+        }
+
+        private static void AxKHOpenAPI1_OnReceiveChejanData(object sender, _DKHOpenAPIEvents_OnReceiveChejanDataEvent e)
+        {
+            Debug.Info(e.sGubun + ":" + e.sFIdList + "," + e.nItemCnt);
         }
 
         private static void Timer_Tick(object sender, EventArgs e)
@@ -190,12 +216,44 @@ namespace Arbitrader
             return DateTime.Now;
         }
 
+        public static bool IsTradeable()
+        {
+            var now = Time();
+            if(now.Hour <= 9 && now.Minute < 5)
+            {
+                return false;
+            }
+
+            if(now.Hour >= 15 && now.Minute >= 15)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool IsOrderable()
+        {
+            var now = Time();
+            if (now.Hour <= 9 && now.Minute < 5)
+            {
+                return false;
+            }
+
+            if (now.Hour >= 15 && now.Minute >= 19)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static void SetInputValue(string sID, string sValue)
         {
             _api.SetInputValue(sID, sValue);
         }
 
-        public static void CommRqData(string sTrCode, TrCallback callback, int seq = 0)
+        public static void CommRqData(string rq, string sTrCode, TrCallback callback, int seq = 0)
         {
             if (_trs.ContainsKey(sTrCode))
             {
@@ -203,8 +261,69 @@ namespace Arbitrader
                 return;
             }
 
-            _api.CommRqData("RQName", sTrCode, seq, "화면번호");
+            _api.CommRqData(rq, sTrCode, seq, "6000");
             _trs[sTrCode] = callback;
+        }
+
+        public static void SetRealReg(IEnumerable<string> codes)
+        {
+            string sell = string.Empty;
+            for(int i = 0; i < 10; ++i)
+            {
+                sell += ";";
+                sell += (i + 41).ToString();
+                sell += ";";
+                sell += (i + 61).ToString();
+            }
+
+            string buy = string.Empty;
+            for (int i = 0; i < 10; ++i)
+            {
+                buy += ";";
+                buy += (i + 51).ToString();
+                buy += ";";
+                buy += (i + 71).ToString();
+            }
+
+            string fids = "9001;21" + buy + sell;       
+
+            _api.SetRealReg("6001", codes.FirstOrDefault(), fids, "0");            
+            foreach(var code in codes.Skip(1))
+            {
+                _api.SetRealReg("6001", code, fids, "1");
+            }
+        }
+
+        public static string GetRealData(string code, int fid)
+        {
+            return _api.GetCommRealData(code, fid);
+        }
+
+        public static int Sell(string account, string code, int quantity)
+        {
+            return _api.SendOrder("주식주문", "6002", account, 2, code, quantity, 0, "03", "");
+        }
+
+        public static int Buy(string account, string code, int quantity)
+        {
+            return _api.SendOrder("주식주문", "6002", account, 1, code, quantity, 0, "03", "");
+        }
+
+        public static void Clear()
+        {
+            _trs.Clear();
+            _actions.Clear();
+            ReceivedRealData = null;
+            _api.SetRealRemove("ALL", "ALL");
+        }
+
+        private class TimerAction
+        {
+            // in ms
+            public int Interval;
+            public Action Action;
+
+            public DateTime LastTime;
         }
     }
 }
