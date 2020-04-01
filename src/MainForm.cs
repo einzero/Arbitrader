@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AxKHOpenAPILib;
@@ -15,15 +16,7 @@ namespace Arbitrader
             get;
             private set;
         }
-
-         public RichTextBox Logs
-        {
-            get
-            {
-                return richTextBox_Logs;
-            }
-        }
-
+         
         private readonly List<Control> _tradeControls = new List<Control>();
         private Trader _trader;
 
@@ -33,8 +26,42 @@ namespace Arbitrader
 
             InitializeComponent();
             OpenApi.Init(axKHOpenAPI);
-
             OpenApi.Connected += OpenApi_Connected;
+
+            Debug.Logged += delegate (DateTime time, Debug.LogLevel level, string text)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(richTextBox_Logs.Text))
+                    {
+                        richTextBox_Logs.AppendText(Environment.NewLine);
+                    }
+
+                    Color color = Color.Black;
+                    switch (level)
+                    {
+                        case Debug.LogLevel.Warning:
+                            color = Color.DarkOrange;
+                            break;
+                        case Debug.LogLevel.Error:
+                            color = Color.DarkRed;
+                            break;
+                    }
+
+                    var fullText = string.Format("{0}: {1}", time, text);
+                    richTextBox_Logs.AppendText(fullText, color);
+                    richTextBox_Logs.ScrollToCaret();
+
+                    using (StreamWriter w = File.AppendText("log.txt"))
+                    {
+                        w.WriteLine(fullText);
+                    }
+                }
+                catch(Exception e)
+                {
+                    File.WriteAllText("exception.txt", e.ToString());
+                }
+            };
 
             dataGridView_Balance.Columns.Add("예수금", "예수금");
             dataGridView_Balance.Columns.Add("D+2추정예수금", "D+2추정예수금");
@@ -183,7 +210,7 @@ namespace Arbitrader
             OpenApi.ReceivedRealData += delegate (_DKHOpenAPIEvents_OnReceiveRealDataEvent real)
             {
                 if (real.sRealType == "주식호가잔량")
-                {
+                {                    
                     var askingPrice = new AskingPrice(DateTime.Now);
                     for (int i = 0; i < 10; ++i)
                     {
@@ -204,7 +231,7 @@ namespace Arbitrader
                 }
             };
 
-            OpenApi.RegisterAction(300, delegate ()
+            OpenApi.RegisterAction(1000, delegate ()
             {
                 _trader.Process();
             });

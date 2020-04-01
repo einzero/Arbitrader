@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arbitrader
 {
     public static class Debug
     {
+        public enum LogLevel
+        {
+            Info,
+            Warning,
+            Error,
+        }
+
+        public static event Action<DateTime, LogLevel, string> Logged;
+
         public static void Error(string format, params object[] args)
         {
             Log(LogLevel.Error, format, args);
@@ -39,20 +44,10 @@ namespace Arbitrader
                 return;
             }
 
-            MainForm form = MainForm.Instance;
-
-            if (!string.IsNullOrEmpty(form.Logs.Text))
+            if (Logged != null)
             {
-                form.Logs.AppendText(Environment.NewLine);
+                Logged(DateTime.Now, level, string.Format(format, args));
             }
-
-            Color color = GetColorByLevel(level);
-
-            var str = string.Format(format, args);
-            var now = DateTime.Now;
-            var header = string.Format("{0}: {1}", now, str);
-            form.Logs.AppendText(header, color);
-            form.Logs.ScrollToCaret();
         }
 
         private static Color GetColorByLevel(LogLevel level)
@@ -66,13 +61,6 @@ namespace Arbitrader
             }
 
             return Color.Black;
-        }
-
-        private enum LogLevel
-        {
-            Info,
-            Warning,
-            Error,
         }
     }
 }

@@ -219,22 +219,6 @@ namespace Arbitrader
         public static bool IsTradeable()
         {
             var now = Time();
-            if(now.Hour <= 9 && now.Minute < 5)
-            {
-                return false;
-            }
-
-            if(now.Hour >= 15 && now.Minute >= 15)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public static bool IsOrderable()
-        {
-            var now = Time();
             if (now.Hour <= 9 && now.Minute < 5)
             {
                 return false;

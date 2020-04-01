@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AxKHOpenAPILib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,10 +14,10 @@ namespace Arbitrader
         public enum EPhase
         {
             Begin,
+            OrderConfirm,
             Balance,            
             Price,
             Order,     
-            OrderConfirm,
         }
 
         public EPhase Phase
@@ -89,7 +90,7 @@ namespace Arbitrader
 
             if(Phase == EPhase.Price)
             {
-                RunPhase();
+                ProcessPhase();
             }            
         }
 
@@ -97,10 +98,10 @@ namespace Arbitrader
         {
             if(Phase == EPhase.Begin)
             {
-                Phase = EPhase.Balance;
+                MoveState(EPhase.OrderConfirm);
             }
 
-            RunPhase();
+            ProcessPhase();
 
             if (Processed != null)
             {
@@ -110,24 +111,28 @@ namespace Arbitrader
 
         private void MoveState(EPhase phase)
         {
-            if (_wait)
-            {
-                return;
-            }
 
-            if(phase != Phase)
+            if (phase != Phase)
             {
                 Debug.Info("Phase: " + phase.ToString());
             }
 
             Phase = phase;
-            RunPhase();
+            ProcessPhase();
         }
 
-        private void RunPhase()
+        private void ProcessPhase()
         {
+            if (_wait || !OpenApi.IsTradeable())
+            {
+                return;
+            }
+
             switch (Phase)
             {
+                case EPhase.OrderConfirm:
+                    OnOrderConfirm();
+                    break;
                 case EPhase.Balance:
                     OnBalance();
                     break;
@@ -137,10 +142,35 @@ namespace Arbitrader
                 case EPhase.Order:
                     OnOrder();
                     break;
-                case EPhase.OrderConfirm:
-                    OnOrderConfirm();
-                    break;
             }
+        }
+
+        private void OnOrderConfirm()
+        {            
+            _wait = true;
+
+            OpenApi.SetInputValue("계좌번호", _account);
+            OpenApi.SetInputValue("전체종목구분", "0");
+            OpenApi.SetInputValue("매매구분", "0");
+            OpenApi.SetInputValue("체결구분", "1");
+            OpenApi.CommRqData("실시간미체결요청", "opt10075", delegate(_DKHOpenAPIEvents_OnReceiveTrDataEvent e)
+            {
+                int count = OpenApi.GetRepeatCnt(e);
+                bool hasRemain = false;
+                for(int i = 0; i < count; ++i)
+                {
+                    var name = OpenApi.GetTrData(e, "종목명", i);
+                    var remain = OpenApi.GetTrData(e, "미체결수량", i).ToInt();
+                    if(remain > 0)
+                    {
+                        hasRemain = true;
+                        break;
+                    }
+                }
+
+                _wait = false;                        
+                MoveState(hasRemain ? EPhase.Begin : EPhase.Balance);
+            });            
         }
 
         private void OnBalance()
@@ -223,26 +253,29 @@ namespace Arbitrader
             else
             {
                 // 일단 판거만큼만 산다.
-                double sellPrice = CalculatePrice(other.Quantity, other.AskingPrice.Buy);
-                double buyPrice = CalculatePrice(other.Quantity, target.AskingPrice.Sell);                
+                // 최대 주문 크기를 제한 
+                var quantity = Math.Min(other.Quantity, _quantity);
+                double sellPrice = CalculatePrice(quantity, other.AskingPrice.Buy);
+                double buyPrice = CalculatePrice(quantity, target.AskingPrice.Sell);                
                 if(sellPrice == -1 || buyPrice == -1)
                 {
                     MoveState(EPhase.Begin);
                     return;
                 }
 
+                Debug.Info("Price Inverse: Sell({0}) - {1} / Buy({2}) - {3}", other.Stock, sellPrice, target.Stock, buyPrice);
                 if (sellPrice >= buyPrice * _margin)
                 {
                     _sellOrders.Add(new Order
                     {
                         Stock = other.Stock,
-                        Quantity = other.Quantity
+                        Quantity = quantity
                     });
 
                     _buyOrders.Add(new Order
                     {
                         Stock = target.Stock,
-                        Quantity = other.Quantity,
+                        Quantity = quantity
                     });
                 }
             }
@@ -304,36 +337,23 @@ namespace Arbitrader
 
         private void OnOrder()
         {
-            _wait = true;
-
-            for(int i = _sellOrders.Count - 1; i >= 0; --i)
+            for (int i = _sellOrders.Count - 1; i >= 0; --i)
             {
                 var order = _sellOrders[i];
                 var result = OpenApi.Sell(_account, order.Stock.Code, order.Quantity);
-                Debug.Warn("Sell: {0}, {1}, Result: {2}", order.Stock.ToString(), order.Quantity, result);
+                Debug.Warn("Sell: {0}, {1}, Result: {2}", order.Stock, order.Quantity, result);
             }
 
             for (int i = _buyOrders.Count - 1; i >= 0; --i)
             {
                 var order = _buyOrders[i];
                 var result = OpenApi.Buy(_account, order.Stock.Code, order.Quantity);
-                Debug.Warn("Buy: {0}, {1}, Result: {2}", order.Stock.ToString(), order.Quantity, result);
+                Debug.Warn("Buy: {0}, {1}, Result: {2}", order.Stock, order.Quantity, result);
             }
 
             _sellOrders.Clear();
             _buyOrders.Clear();
-
-            _wait = false;
             MoveState(EPhase.OrderConfirm);
-        }
-
-
-        private void OnOrderConfirm()
-        {
-            _wait = true;
-            Thread.Sleep(1000);
-            _wait = false;
-            MoveState(EPhase.Balance);
         }
     }
 }
