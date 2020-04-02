@@ -17,6 +17,7 @@ namespace Arbitrader
         }
 
         public DateTime Time;
+        public float Nav;
         public List<Asking> Sell = new List<Asking>();
         public List<Asking> Buy = new List<Asking>();
     }

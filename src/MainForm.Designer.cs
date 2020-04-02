@@ -57,6 +57,7 @@
             this.comboBox_Stock1 = new System.Windows.Forms.ComboBox();
             this.button_Start = new System.Windows.Forms.Button();
             this.groupBox_Trade = new System.Windows.Forms.GroupBox();
+            this.button_CollectData = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Balance)).BeginInit();
@@ -241,7 +242,7 @@
             // 
             // button_Update
             // 
-            this.button_Update.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button_Update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Update.Location = new System.Drawing.Point(676, 203);
             this.button_Update.Name = "button_Update";
             this.button_Update.Size = new System.Drawing.Size(75, 23);
@@ -377,11 +378,23 @@
             this.groupBox_Trade.TabStop = false;
             this.groupBox_Trade.Text = "자동 거래";
             // 
+            // button_CollectData
+            // 
+            this.button_CollectData.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button_CollectData.Location = new System.Drawing.Point(12, 163);
+            this.button_CollectData.Name = "button_CollectData";
+            this.button_CollectData.Size = new System.Drawing.Size(182, 44);
+            this.button_CollectData.TabIndex = 28;
+            this.button_CollectData.Text = "데이터 수집";
+            this.button_CollectData.UseVisualStyleBackColor = true;
+            this.button_CollectData.Click += new System.EventHandler(this.button_CollectData_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(764, 650);
+            this.Controls.Add(this.button_CollectData);
             this.Controls.Add(this.dataGridView_Stocks);
             this.Controls.Add(this.button_Update);
             this.Controls.Add(this.button_LogClear);
@@ -439,6 +452,7 @@
         private System.Windows.Forms.ComboBox comboBox_Stock1;
         private System.Windows.Forms.Button button_Start;
         private System.Windows.Forms.GroupBox groupBox_Trade;
+        private System.Windows.Forms.Button button_CollectData;
     }
 }
 

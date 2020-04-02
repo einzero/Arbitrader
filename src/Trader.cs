@@ -234,7 +234,7 @@ namespace Arbitrader
             
             // 모든 가격 정보들이 들어왔으므로 뭘 할지 결정
             // 싼걸 사야 함
-            int index = _targets[0].AskingPrice.Sell[0].Price < _targets[1].AskingPrice.Sell[0].Price ? 0 : 1;
+            int index = _targets[0].AskingPrice.Sell[0].Price <= _targets[1].AskingPrice.Sell[0].Price ? 0 : 1;
             var target = _targets[index];
             var other = _targets[(index + 1) % 2];
             
@@ -255,16 +255,19 @@ namespace Arbitrader
                 // 일단 판거만큼만 산다.
                 // 최대 주문 크기를 제한 
                 var quantity = Math.Min(other.Quantity, _quantity);
-                double sellPrice = CalculatePrice(quantity, other.AskingPrice.Buy);
-                double buyPrice = CalculatePrice(quantity, target.AskingPrice.Sell);                
-                if(sellPrice == -1 || buyPrice == -1)
+                double buyPrice = CalculatePrice(quantity, other.AskingPrice.Buy);
+                double sellPrice = CalculatePrice(quantity, target.AskingPrice.Sell);                
+                if(buyPrice == -1 || sellPrice == -1)
                 {
                     MoveState(EPhase.Begin);
                     return;
                 }
 
-                Debug.Info("Price Inverse: Sell({0}) - {1} / Buy({2}) - {3}", other.Stock, sellPrice, target.Stock, buyPrice);
-                if (sellPrice >= buyPrice * _margin)
+                Debug.Info("Price Inverse! {0}: 매도호가: {1}, 매수호가: {2} / {3}: 매도호가: {4}, 매수호가: {5}",
+                    other.Stock, other.AskingPrice.Sell[0].Price, other.AskingPrice.Buy[0].Price,
+                    target.Stock, target.AskingPrice.Sell[0].Price, target.AskingPrice.Buy[0].Price);
+
+                if (buyPrice >= sellPrice * _margin)
                 {
                     _sellOrders.Add(new Order
                     {

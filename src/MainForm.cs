@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Data.SQLite;
 using AxKHOpenAPILib;
 
 namespace Arbitrader
@@ -19,6 +21,7 @@ namespace Arbitrader
          
         private readonly List<Control> _tradeControls = new List<Control>();
         private Trader _trader;
+        private Dictionary<string, SQLiteConnection> _connections = new Dictionary<string, SQLiteConnection>();
 
         public MainForm()
         {
@@ -27,6 +30,7 @@ namespace Arbitrader
             InitializeComponent();
             OpenApi.Init(axKHOpenAPI);
             OpenApi.Connected += OpenApi_Connected;
+            OpenApi.ReceivedRealData += OpenApi_ReceivedRealData;
 
             Debug.Logged += delegate (DateTime time, Debug.LogLevel level, string text)
             {
@@ -112,6 +116,103 @@ namespace Arbitrader
             Show();
         }
 
+
+        private void OpenApi_ReceivedRealData(_DKHOpenAPIEvents_OnReceiveRealDataEvent real)
+        {
+            if (real.sRealType != "주식호가잔량")
+            {
+                return;
+            }
+
+            DateTime now = DateTime.Now;
+
+            DateTime time;
+            if (DateTime.TryParseExact(OpenApi.GetRealData(real.sRealKey, 21),
+                "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out time))
+            {
+                now = new DateTime(now.Year, now.Month, now.Day, time.Hour, time.Minute, time.Second);
+            }
+
+            var askingPrice = new AskingPrice(now);
+            for (int i = 0; i < 10; ++i)
+            {
+                askingPrice.Sell.Add(new Asking
+                {
+                    Price = Math.Abs(OpenApi.GetRealData(real.sRealKey, i + 41).ToInt()),
+                    Quantity = OpenApi.GetRealData(real.sRealKey, i + 61).ToInt(),
+                });
+
+                askingPrice.Buy.Add(new Asking
+                {
+                    Price = Math.Abs(OpenApi.GetRealData(real.sRealKey, i + 51).ToInt()),
+                    Quantity = OpenApi.GetRealData(real.sRealKey, i + 71).ToInt(),
+                });
+            }
+
+            var nav = OpenApi.GetRealData(real.sRealKey, 36);
+            askingPrice.Nav = nav.ToFloat();
+
+            if (_trader != null)
+            {
+                _trader.SetAskingPrice(real.sRealKey, askingPrice);
+            }
+        }
+
+        private void WriteAskingPrice(string key, AskingPrice price)
+        {
+            try
+            {
+                var conn = GetConnection(key);
+
+                var sql = string.Format("insert into prices(time, sell, sell_cnt, buy, buy_cnt, nav) values ('{0}', {1}, {2}, {3}, {4}, {5})",
+                    price.Time.ToString(), price.Sell[0].Price, price.Sell[0].Quantity,
+                    price.Buy[0].Price, price.Buy[0].Quantity, price.Nav);
+
+                SQLiteCommand command = new SQLiteCommand(sql, conn);
+                int result = command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                Debug.Error(e.ToString());
+            }
+        }
+
+        private SQLiteConnection GetConnection(string key)
+        {
+            SQLiteConnection conn;
+            if(_connections.TryGetValue(key, out conn))
+            {
+                return conn;
+            }
+
+            bool createTable = false;
+            var name = key + ".sqlite";
+            if(!File.Exists(name))
+            {
+                SQLiteConnection.CreateFile(name);
+                createTable = true;
+            }            
+
+            conn = new SQLiteConnection(string.Format("Data Source={0};Version=3;", name));
+            conn.Open();
+            _connections.Add(key, conn);
+
+            if (createTable)
+            {
+                string sql = "create table prices(time varchar(30), sell int, sell_cnt int, buy int, buy_cnt int, nav real)";
+                var command = new SQLiteCommand(sql, conn);
+                command.ExecuteNonQuery();
+
+
+                sql = "create index timeindex on prices(time)";
+                command = new SQLiteCommand(sql, conn);
+                command.ExecuteNonQuery();
+            }
+
+            Debug.Info("Open sqlite: " + name);
+            return conn;
+        }
+
         private void UpdateBalances()
         {
             OpenApi.UpdateBalances(GetAccount(), delegate (_DKHOpenAPIEvents_OnReceiveTrDataEvent e)
@@ -179,7 +280,7 @@ namespace Arbitrader
                 comboBox_Stock3.SelectedItem as Stock,
             };
 
-            if(_trader == null)
+            if (_trader == null)
             {
                 float margin = textBox_Margin.Text.ToFloat();
                 margin /= 100;
@@ -195,46 +296,59 @@ namespace Arbitrader
 
             // 현재 시작여부
             var started = _trader != null;
-            
+
             button_Start.Text = started ? "거래 종료" : "거래 시작";
-            _tradeControls.ForEach(x => x.Enabled = !started);
+            EnableTradeControls(!started);
+            button_CollectData.Enabled = !started;
 
             OpenApi.Clear();
-         
-            if(_trader == null)
+
+            if (_trader == null)
             {
                 return;
             }
-            
-            OpenApi.SetRealReg(stocks.Select(x => x.Code));        
-            OpenApi.ReceivedRealData += delegate (_DKHOpenAPIEvents_OnReceiveRealDataEvent real)
-            {
-                if (real.sRealType == "주식호가잔량")
-                {                    
-                    var askingPrice = new AskingPrice(DateTime.Now);
-                    for (int i = 0; i < 10; ++i)
-                    {
-                        askingPrice.Sell.Add(new Asking
-                        {
-                            Price = Math.Abs(OpenApi.GetRealData(real.sRealKey, i + 41).ToInt()),
-                            Quantity = OpenApi.GetRealData(real.sRealKey, i + 61).ToInt(),
-                        });
 
-                        askingPrice.Buy.Add(new Asking
-                        {
-                            Price = Math.Abs(OpenApi.GetRealData(real.sRealKey, i + 51).ToInt()),
-                            Quantity = OpenApi.GetRealData(real.sRealKey, i + 71).ToInt(),
-                        });
-                    }
-
-                    _trader.SetAskingPrice(real.sRealKey, askingPrice);
-                }
-            };
-
+            OpenApi.SetRealReg(stocks.Select(x => x.Code));
             OpenApi.RegisterAction(1000, delegate ()
             {
                 _trader.Process();
             });
+        }
+
+        private void EnableTradeControls(bool enabled)
+        {
+            _tradeControls.ForEach(x => x.Enabled = enabled);
+        }
+
+        private void button_CollectData_Click(object sender, EventArgs e)
+        {
+            OpenApi.Clear();
+         
+            const string end = "수집 종료";
+            var collecting = button_CollectData.Text != end;
+            button_CollectData.Text = collecting ? end : "데이터 수집";
+            EnableTradeControls(!collecting);
+            button_Start.Enabled = !collecting;
+
+            if (!collecting)
+            {
+                return;
+            }
+
+            var etfs = OpenApi.GetETFs();
+            string[] names =
+            {
+                "KODEX 200",
+                "TIGER 200",
+                "KBSTAR 200",
+                "KODEX 인버스",
+                "KODEX 코스닥 150",
+                "TIGER 코스닥150",
+                "KODEX 코스닥150선물인버스"
+            };
+
+            var stocks = etfs.Where(x => names.Contains(x.Name));            
+            OpenApi.SetRealReg(stocks.Select(x => x.Code));
         }
     }
 

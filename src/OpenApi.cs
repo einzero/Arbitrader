@@ -269,7 +269,7 @@ namespace Arbitrader
                 buy += (i + 71).ToString();
             }
 
-            string fids = "9001;21" + buy + sell;       
+            string fids = "9001;21;36" + buy + sell;       
 
             _api.SetRealReg("6001", codes.FirstOrDefault(), fids, "0");            
             foreach(var code in codes.Skip(1))
@@ -297,7 +297,6 @@ namespace Arbitrader
         {
             _trs.Clear();
             _actions.Clear();
-            ReceivedRealData = null;
             _api.SetRealRemove("ALL", "ALL");
         }
 
