@@ -126,12 +126,13 @@ namespace Arbitrader
 
             DateTime now = DateTime.Now;
 
-            DateTime time;
-            if (DateTime.TryParseExact(OpenApi.GetRealData(real.sRealKey, 21),
-                "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out time))
-            {
-                now = new DateTime(now.Year, now.Month, now.Day, time.Hour, time.Minute, time.Second);
-            }
+            //DateTime time;
+            //var strTime = OpenApi.GetRealData(real.sRealKey, 21);
+            //if (DateTime.TryParseExact(strTime,
+            //    "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out time))
+            //{
+            //    now = new DateTime(now.Year, now.Month, now.Day, time.Hour, time.Minute, time.Second);
+            //}
 
             var askingPrice = new AskingPrice(now);
             for (int i = 0; i < 10; ++i)
@@ -156,6 +157,8 @@ namespace Arbitrader
             {
                 _trader.SetAskingPrice(real.sRealKey, askingPrice);
             }
+
+            WriteAskingPrice(real.sRealKey, askingPrice);
         }
 
         private void WriteAskingPrice(string key, AskingPrice price)
@@ -164,8 +167,9 @@ namespace Arbitrader
             {
                 var conn = GetConnection(key);
 
+                var time = price.Time.ToString("yyyy-MM-dd hh:mm:ss.ff");
                 var sql = string.Format("insert into prices(time, sell, sell_cnt, buy, buy_cnt, nav) values ('{0}', {1}, {2}, {3}, {4}, {5})",
-                    price.Time.ToString(), price.Sell[0].Price, price.Sell[0].Quantity,
+                    time, price.Sell[0].Price, price.Sell[0].Quantity,
                     price.Buy[0].Price, price.Buy[0].Quantity, price.Nav);
 
                 SQLiteCommand command = new SQLiteCommand(sql, conn);
