@@ -10,7 +10,9 @@ namespace Arbitrader
 
     public static class OpenApi
     {
-        public static double Fee = 0.00015;
+        public const int RealPriceCount = 5;
+
+        public const double Fee = 0.00015;
 
         public static event Action<string[], string, string> Connected;
         public static event Action<_DKHOpenAPIEvents_OnReceiveRealDataEvent> ReceivedRealData;
@@ -252,7 +254,7 @@ namespace Arbitrader
         public static void SetRealReg(IEnumerable<string> codes)
         {
             string sell = string.Empty;
-            for(int i = 0; i < 10; ++i)
+            for(int i = 0; i < RealPriceCount; ++i)
             {
                 sell += ";";
                 sell += (i + 41).ToString();
@@ -261,7 +263,7 @@ namespace Arbitrader
             }
 
             string buy = string.Empty;
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < RealPriceCount; ++i)
             {
                 buy += ";";
                 buy += (i + 51).ToString();
@@ -269,7 +271,7 @@ namespace Arbitrader
                 buy += (i + 71).ToString();
             }
 
-            string fids = "9001;21;36" + buy + sell;       
+            string fids = "36" + buy + sell;       
 
             _api.SetRealReg("6001", codes.FirstOrDefault(), fids, "0");            
             foreach(var code in codes.Skip(1))

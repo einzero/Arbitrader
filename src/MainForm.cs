@@ -18,10 +18,13 @@ namespace Arbitrader
             get;
             private set;
         }
-         
+
+        private const int LogPriceCount = 2;
+
         private readonly List<Control> _tradeControls = new List<Control>();
         private Trader _trader;
         private Dictionary<string, SQLiteConnection> _connections = new Dictionary<string, SQLiteConnection>();
+        private Dictionary<string, float> _navs = new Dictionary<string, float>();
 
         public MainForm()
         {
@@ -118,9 +121,11 @@ namespace Arbitrader
 
 
         private void OpenApi_ReceivedRealData(_DKHOpenAPIEvents_OnReceiveRealDataEvent real)
-        {
-            if (real.sRealType != "주식호가잔량")
+        {   
+            if(real.sRealType == "ETF NAV")
             {
+                var nav = OpenApi.GetRealData(real.sRealKey, 36);
+                _navs[real.sRealKey] = Math.Abs(nav.ToFloat());
                 return;
             }
 
@@ -135,7 +140,7 @@ namespace Arbitrader
             //}
 
             var askingPrice = new AskingPrice(now);
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < OpenApi.RealPriceCount; ++i)
             {
                 askingPrice.Sell.Add(new Asking
                 {
@@ -150,8 +155,7 @@ namespace Arbitrader
                 });
             }
 
-            var nav = OpenApi.GetRealData(real.sRealKey, 36);
-            askingPrice.Nav = nav.ToFloat();
+            _navs.TryGetValue(real.sRealKey, out askingPrice.Nav);
 
             if (_trader != null)
             {
@@ -168,9 +172,20 @@ namespace Arbitrader
                 var conn = GetConnection(key);
 
                 var time = price.Time.ToString("yyyy-MM-dd hh:mm:ss.ff");
-                var sql = string.Format("insert into prices(time, sell, sell_cnt, buy, buy_cnt, nav) values ('{0}', {1}, {2}, {3}, {4}, {5})",
-                    time, price.Sell[0].Price, price.Sell[0].Quantity,
-                    price.Buy[0].Price, price.Buy[0].Quantity, price.Nav);
+                var sql = string.Format("insert into prices(time, nav, sell1, sell1_cnt, sell2, sell2_cnt, " +
+                    "buy1, buy1_cnt, buy2, buy2_cnt) values ( '{0}', {1}", time, price.Nav);
+
+                for(int i = 0; i < LogPriceCount; ++i)
+                {
+                    sql += "," + price.Sell[i].Price + "," + price.Sell[i].Quantity;
+                }
+
+                for (int i = 0; i < LogPriceCount; ++i)
+                {
+                    sql += "," + price.Buy[i].Price + "," + price.Buy[i].Quantity;
+                }
+
+                sql += ")";
 
                 SQLiteCommand command = new SQLiteCommand(sql, conn);
                 int result = command.ExecuteNonQuery();
@@ -203,7 +218,10 @@ namespace Arbitrader
 
             if (createTable)
             {
-                string sql = "create table prices(time varchar(30), sell int, sell_cnt int, buy int, buy_cnt int, nav real)";
+                string sql = "create table prices(time varchar(30), nav real, " +
+                    "sell1 int, sell1_cnt int, sell2 int, sell2_cnt int," +
+                    "buy1 int, buy1_cnt int, buy2 int, buy2_cnt int)";
+
                 var command = new SQLiteCommand(sql, conn);
                 command.ExecuteNonQuery();
 
