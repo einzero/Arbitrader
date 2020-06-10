@@ -171,7 +171,7 @@ namespace Arbitrader
             {
                 var conn = GetConnection(key);
 
-                var time = price.Time.ToString("yyyy-MM-dd hh:mm:ss.ff");
+                var time = price.Time.ToString("yyyy-MM-dd HH:mm:ss.ff");
                 var sql = string.Format("insert into prices(time, nav, sell1, sell1_cnt, sell2, sell2_cnt, " +
                     "buy1, buy1_cnt, buy2, buy2_cnt) values ( '{0}', {1}", time, price.Nav);
 
@@ -204,8 +204,16 @@ namespace Arbitrader
                 return conn;
             }
 
+            var now = DateTime.Now;
+            var postFix = now.ToString("yyyy-MM-dd");
+
             bool createTable = false;
-            var name = key + ".sqlite";
+            var name = Path.Combine(key, postFix + ".db");
+            if(!Directory.Exists(key))
+            {
+                Directory.CreateDirectory(key);
+            }
+
             if(!File.Exists(name))
             {
                 SQLiteConnection.CreateFile(name);
@@ -224,7 +232,6 @@ namespace Arbitrader
 
                 var command = new SQLiteCommand(sql, conn);
                 command.ExecuteNonQuery();
-
 
                 sql = "create index timeindex on prices(time)";
                 command = new SQLiteCommand(sql, conn);
